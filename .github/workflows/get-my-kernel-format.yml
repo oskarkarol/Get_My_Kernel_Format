@@ -34,11 +34,16 @@ jobs:
           chmod +x magiskboot
 
           # Run magiskboot and capture output
-          OUTPUT=$(./magiskboot unpack boot.img 2>&1)
+          OUTPUT=$(./magiskboot unpack boot.img)
           echo "$OUTPUT"  # Print the entire output for debugging
 
-          # Simply grep the line containing 'KERNEL_FMT' and print it directly
-          echo "$OUTPUT" | grep 'KERNEL_FMT' > kernel_fmt.txt
+          # Extract the full KERNEL_FMT line
+          NAME=$(echo "$OUTPUT" | grep 'KERNEL_FMT')
+
+          # Add 5 tabs in front of each line of the OUTPUT and save to a file
+          echo "$OUTPUT" > "${NAME}.txt"
+
+          echo "KERNEL_FILE=${NAME}.txt" >> $GITHUB_ENV
 
       # Step 4: Commit and Push the New File
       - name: Commit and Push
