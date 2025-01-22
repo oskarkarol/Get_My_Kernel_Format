@@ -30,7 +30,8 @@ jobs:
       - name: Process boot.img
         run: |
           # Unpack boot.img
-          magiskboot unpack boot.img
+          chmod +x magiskboot
+          ./magiskboot unpack boot.img
           
           # Extract KERNEL_FMT line
           KERNEL_FMT=$(grep 'KERNEL_FMT' unpack.log || echo "UNKNOWN")
