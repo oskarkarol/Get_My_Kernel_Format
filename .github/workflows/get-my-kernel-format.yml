@@ -29,12 +29,13 @@ jobs:
 
       # Step 3: Ensure magiskboot is executable and process boot.img
       - name: Process boot.img
+        continue-on-error: true
         run: |
           # Ensure magiskboot is executable
           chmod +x magiskboot
 
           # Run magiskboot and capture output
-          OUTPUT=$(./magiskboot unpack boot.img || true)
+          OUTPUT=$(./magiskboot unpack boot.img)
           echo "$OUTPUT"  # Print the entire output for debugging
 
           # Extract the full KERNEL_FMT line
