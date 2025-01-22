@@ -28,7 +28,7 @@ This tutorial will guide you through the steps to process a `boot.img` file usin
    - In the Actions tab, locate the workflow named **"Process boot.img from URL"** or similar.
    - Click on the workflow and press the **Run workflow** button.
    - Enter the URL to the `boot.img` file you uploaded in Step 2.
-     - You can use the raw URL of the `boot.img` in your repository. The URL should look something like:  
+     - You can use the raw URL of the `boot.img`. The URL should look something like:  
        `https://filebin.net/gp05fto9lulm3qwg/boot.img`
    - Click **Run workflow** to trigger the GitHub Action.
 
