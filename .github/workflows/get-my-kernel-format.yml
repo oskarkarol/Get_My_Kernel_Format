@@ -51,8 +51,8 @@ jobs:
         env:
           FILE_NAME: ${{ env.KERNEL_FILE }}
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          #git config --global user.name "GitHub Actions"
+          #git config --global user.email "actions@github.com"
           
           # Add the new file
           git add "$FILE_NAME"
