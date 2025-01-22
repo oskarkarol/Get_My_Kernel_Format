@@ -37,13 +37,13 @@ jobs:
           echo "$OUTPUT"
 
           # Extract the KERNEL_FMT line from the output
-          KERNEL_FMT=$(echo "$OUTPUT" | grep 'KERNEL_FMT' | awk -F'[][]' '{print $2}' || echo "UNKNOWN or incorrect boot.img link")
+          KERNEL_FMT=$(echo "$OUTPUT" | grep 'KERNEL_FMT' | awk -F ': ' '{print $2}')
           echo "Found Kernel Format: $KERNEL_FMT"
 
           # Validate the extracted kernel format
-          if [ "$KERNEL_FMT" = "UNKNOWN or incorrect boot.img link" ] || [ -z "$KERNEL_FMT" ]; then
-            echo "Kernel format not found or incorrect boot.img link. Exiting."
-            exit 1
+          if [ -z "$KERNEL_FMT" ] || [ "$KERNEL_FMT" = "UNKNOWN or incorrect boot.img link" ]; then
+                    echo "Kernel format not found or incorrect boot.img link. Exiting."
+                    exit 1
           fi
 
           # Create a file named after the kernel format
@@ -51,6 +51,7 @@ jobs:
 
           # Save the file name to GITHUB_ENV
           echo "KERNEL_FILE=${KERNEL_FMT}.txt" >> $GITHUB_ENV
+
 
       # Step 4: Commit and Push the New File
       - name: Commit and Push
