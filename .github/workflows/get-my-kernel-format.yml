@@ -1,0 +1,55 @@
+name: Process boot.img and Commit Kernel Format
+
+on:
+  push:
+    paths:
+      - 'boot.img' # Trigger only when boot.img is uploaded or modified
+
+jobs:
+  process-boot-img:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.deleted != true }} # Ensure it's not a delete event
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Unpack boot.img and extract KERNEL_FMT
+      - name: Process boot.img
+        run: |
+          # Unpack boot.img
+          magiskboot unpack boot.img
+          
+          # Extract KERNEL_FMT line
+          KERNEL_FMT=$(grep 'KERNEL_FMT' unpack.log || echo "UNKNOWN")
+          echo "Found Kernel Format: $KERNEL_FMT"
+
+          # Extract the value and create a file named after it
+          FORMAT_VALUE=$(echo "$KERNEL_FMT" | cut -d '=' -f2 | tr -d ' ')
+          if [ -z "$FORMAT_VALUE" ]; then
+            echo "Kernel format not found. Exiting."
+            exit 1
+          fi
+          
+          echo "$KERNEL_FMT" > "${FORMAT_VALUE}.txt"
+
+          # Save the file name to GITHUB_ENV
+          echo "KERNEL_FILE=${FORMAT_VALUE}.txt" >> $GITHUB_ENV
+
+      # Step 3: Commit and Push the New File
+      - name: Commit and Push
+        env:
+          FILE_NAME: ${{ env.KERNEL_FILE }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # Add the new file
+          git add "$FILE_NAME"
+          
+          # Commit the change
+          git commit -m "found kernel format: $FILE_NAME"
+          
+          # Push the change
+          git push
