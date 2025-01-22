@@ -26,30 +26,31 @@ jobs:
             exit 1
           fi
 
-      # Step 3: Ensure magiskboot is executable and unpack boot.img
+      # Step 3: Ensure magiskboot is executable and process boot.img
       - name: Process boot.img
         run: |
           # Ensure magiskboot is executable
           chmod +x magiskboot
 
           # Run magiskboot and capture output
-          OUTPUT=$(./magiskboot unpack boot.img)
+          OUTPUT=$(./magiskboot unpack boot.img 2>&1)
+          echo "$OUTPUT"
 
-          # Extract KERNEL_FMT directly from the output
-          KERNEL_FMT=$(echo "$OUTPUT" | grep 'KERNEL_FMT' || echo "UNKNOWN or incorrect boot.img link")
+          # Extract the KERNEL_FMT line from the output
+          KERNEL_FMT=$(echo "$OUTPUT" | grep 'KERNEL_FMT' | awk -F'[][]' '{print $2}' || echo "UNKNOWN or incorrect boot.img link")
           echo "Found Kernel Format: $KERNEL_FMT"
 
-          # Extract the value and create a file named after it
-          FORMAT_VALUE=$(echo "$KERNEL_FMT" | cut -d '=' -f2 | tr -d ' ')
-          if [ -z "$FORMAT_VALUE" ] || [ "$KERNEL_FMT" = "UNKNOWN or incorrect boot.img link" ]; then
+          # Validate the extracted kernel format
+          if [ "$KERNEL_FMT" = "UNKNOWN or incorrect boot.img link" ] || [ -z "$KERNEL_FMT" ]; then
             echo "Kernel format not found or incorrect boot.img link. Exiting."
             exit 1
           fi
-          
-          echo "$KERNEL_FMT" > "${FORMAT_VALUE}.txt"
+
+          # Create a file named after the kernel format
+          echo "$KERNEL_FMT" > "${KERNEL_FMT}.txt"
 
           # Save the file name to GITHUB_ENV
-          echo "KERNEL_FILE=${FORMAT_VALUE}.txt" >> $GITHUB_ENV
+          echo "KERNEL_FILE=${KERNEL_FMT}.txt" >> $GITHUB_ENV
 
       # Step 4: Commit and Push the New File
       - name: Commit and Push
