@@ -34,7 +34,7 @@ jobs:
           chmod +x magiskboot
 
           # Run magiskboot and capture output
-          OUTPUT=$(./magiskboot unpack boot.img)
+          OUTPUT=$(./magiskboot unpack boot.img || true)
           echo "$OUTPUT"  # Print the entire output for debugging
 
           # Extract the full KERNEL_FMT line
