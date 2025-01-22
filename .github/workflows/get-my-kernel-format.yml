@@ -37,7 +37,7 @@ jobs:
           echo "$OUTPUT"
 
           # Extract the KERNEL_FMT line from the output
-          KERNEL_FMT=$(echo "$OUTPUT" | grep 'KERNEL_FMT' | awk -F ': ' '{print $2}')
+          KERNEL_FMT=$(echo "$OUTPUT" | grep 'KERNEL_FMT' | awk -F ': ' '{print $2}' | tr -d '[:space:]' | tr -d '[]') # Remove spaces and brackets
           echo "Found Kernel Format: $KERNEL_FMT"
 
           # Validate the extracted kernel format
@@ -51,6 +51,7 @@ jobs:
 
           # Save the file name to GITHUB_ENV
           echo "KERNEL_FILE=${KERNEL_FMT}.txt" >> $GITHUB_ENV
+
 
 
       # Step 4: Commit and Push the New File
