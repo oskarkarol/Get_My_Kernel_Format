@@ -1,7 +1,12 @@
-name: Process boot.img and Commit Kernel Format
+name: Process boot.img from URL
 
 on:
   workflow_dispatch: # Allow manual triggering of the workflow
+    inputs:
+      boot_img_url:
+        description: "URL to download the boot.img file"
+        required: true
+        type: string
 
 jobs:
   process-boot-img:
@@ -12,7 +17,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Unpack boot.img and extract KERNEL_FMT
+      # Step 2: Download boot.img from the provided URL
+      - name: Download boot.img
+        run: |
+          curl -L -o boot.img "${{ github.event.inputs.boot_img_url }}"
+          if [ ! -f "boot.img" ]; then
+            echo "Failed to download boot.img. Exiting."
+            exit 1
+          fi
+
+      # Step 3: Unpack boot.img and extract KERNEL_FMT
       - name: Process boot.img
         run: |
           # Unpack boot.img
@@ -34,7 +48,7 @@ jobs:
           # Save the file name to GITHUB_ENV
           echo "KERNEL_FILE=${FORMAT_VALUE}.txt" >> $GITHUB_ENV
 
-      # Step 3: Commit and Push the New File
+      # Step 4: Commit and Push the New File
       - name: Commit and Push
         env:
           FILE_NAME: ${{ env.KERNEL_FILE }}
