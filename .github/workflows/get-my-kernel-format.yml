@@ -26,21 +26,20 @@ jobs:
             exit 1
           fi
 
-      # Step 3: Unpack boot.img and extract KERNEL_FMT
+      # Step 3: Unpack boot.img and capture KERNEL_FMT
       - name: Process boot.img
         run: |
-          # Unpack boot.img
-          chmod +x magiskboot
-          ./magiskboot unpack boot.img
-          
-          # Extract KERNEL_FMT line
-          KERNEL_FMT=$(grep 'KERNEL_FMT' unpack.log || echo "UNKNOWN")
+          # Run magiskboot and capture output
+          OUTPUT=$(magiskboot unpack boot.img)
+
+          # Extract KERNEL_FMT directly from the output
+          KERNEL_FMT=$(echo "$OUTPUT" | grep 'KERNEL_FMT' || echo "UNKNOWN or incorrect boot.img link")
           echo "Found Kernel Format: $KERNEL_FMT"
 
           # Extract the value and create a file named after it
           FORMAT_VALUE=$(echo "$KERNEL_FMT" | cut -d '=' -f2 | tr -d ' ')
-          if [ -z "$FORMAT_VALUE" ]; then
-            echo "Kernel format not found. Exiting."
+          if [ -z "$FORMAT_VALUE" ] || [ "$KERNEL_FMT" = "UNKNOWN or incorrect boot.img link" ]; then
+            echo "Kernel format not found or incorrect boot.img link. Exiting."
             exit 1
           fi
           
