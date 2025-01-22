@@ -26,11 +26,14 @@ jobs:
             exit 1
           fi
 
-      # Step 3: Unpack boot.img and capture KERNEL_FMT
+      # Step 3: Ensure magiskboot is executable and unpack boot.img
       - name: Process boot.img
         run: |
+          # Ensure magiskboot is executable
+          chmod +x magiskboot
+
           # Run magiskboot and capture output
-          OUTPUT=$(magiskboot unpack boot.img)
+          OUTPUT=$(./magiskboot unpack boot.img)
 
           # Extract KERNEL_FMT directly from the output
           KERNEL_FMT=$(echo "$OUTPUT" | grep 'KERNEL_FMT' || echo "UNKNOWN or incorrect boot.img link")
