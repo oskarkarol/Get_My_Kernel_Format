@@ -29,13 +29,13 @@ This tutorial will guide you through the steps to process a `boot.img` file usin
    - Click on the workflow and press the **Run workflow** button.
    - Enter the URL to the `boot.img` file you uploaded in Step 2.
      - You can use the raw URL of the `boot.img` in your repository. The URL should look something like:  
-       `https://github.com/<your-username>/<your-repo>/raw/main/boot.img`
+       `https://filebin.net/gp05fto9lulm3qwg/boot.img`
    - Click **Run workflow** to trigger the GitHub Action.
 
 ## Step 4: View Kernel Format from the Action's Output
 
 1. **Wait for the Action to Complete**:
-   - The workflow will begin processing. This includes downloading the `boot.img` file, extracting kernel format information, and saving the output to a file.
+   - The workflow will begin processing. This includes downloading the `boot.img` file, extracting kernel format information.
    - Wait for the action to finish. You can monitor the progress from the GitHub Actions interface.
 
 2. **Check the Output**:
