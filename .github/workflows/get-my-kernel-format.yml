@@ -1,14 +1,11 @@
 name: Process boot.img and Commit Kernel Format
 
 on:
-  push:
-    paths:
-      - 'boot.img' # Trigger only when boot.img is uploaded or modified
+  workflow_dispatch: # Allow manual triggering of the workflow
 
 jobs:
   process-boot-img:
     runs-on: ubuntu-latest
-    if: ${{ github.event.deleted != true }} # Ensure it's not a delete event
 
     steps:
       # Step 1: Checkout the repository
