@@ -40,13 +40,7 @@ This tutorial will guide you through the steps to process a `boot.img` file usin
 
 2. **Check the Output**:
    - Once the action completes, view the **logs** from the workflow run.
-   - You’ll see the kernel format (`KERNEL_FMT`) printed in the logs, and a file containing this information will be generated and committed back to your repository.
-   - The file name will be based on the extracted kernel format, for example:  
-     `KERNEL_FMT: lz4_legacy.txt`.
-
-3. **Find the Result**:
-   - Go to your repository and look for the newly created file (e.g., `KERNEL_FMT: lz4_legacy.txt`).
-   - This file will contain the full output from the `magiskboot` unpacking process, including the kernel format.
+   - You’ll see the kernel format (`KERNEL_FMT`) printed in the logs.
 
 ## Summary
 
@@ -55,4 +49,4 @@ You’ve now successfully processed a `boot.img` file using GitHub Actions:
 - Forked the repo.
 - Uploaded the `boot.img` file.
 - Ran the GitHub Action to process it.
-- Retrieved the kernel format from the output file.
+- Retrieved the kernel format.
