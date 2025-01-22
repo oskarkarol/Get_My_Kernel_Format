@@ -12,7 +12,7 @@ This tutorial will guide you through the steps to process a `boot.img` file usin
 1. **Prepare Your `boot.img`**:  
    You will need to upload a `boot.img` file for processing. Ensure your `boot.img` file is correctly named `boot.img` (all lowercase).
 
-2. **Upload `boot.img` to Your Fork**:
+2. **Upload `boot.img`**:
    - https://filebin.net/
    - Click on the **Add file** button and select **Upload files**.
 
