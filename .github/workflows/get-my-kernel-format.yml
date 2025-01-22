@@ -35,30 +35,4 @@ jobs:
           chmod +x magiskboot
 
           # Run magiskboot and capture output
-          OUTPUT=$(./magiskboot unpack boot.img)
-          echo "$OUTPUT"  # Print the entire output for debugging
-
-          # Extract the full KERNEL_FMT line
-          NAME=$(echo "$OUTPUT" | grep 'KERNEL_FMT')
-
-          # Add 5 tabs in front of each line of the OUTPUT and save to a file
-          echo "$OUTPUT" > "${NAME}.txt"
-
-          echo "KERNEL_FILE=${NAME}.txt" >> $GITHUB_ENV
-
-      # Step 4: Commit and Push the New File
-      - name: Commit and Push
-        env:
-          FILE_NAME: ${{ env.KERNEL_FILE }}
-        run: |
-          #git config --global user.name "GitHub Actions"
-          #git config --global user.email "actions@github.com"
-          
-          # Add the new file
-          git add "$FILE_NAME"
-          
-          # Commit the change
-          git commit -m "found kernel format: $FILE_NAME"
-          
-          # Push the change
-          git push
+          ./magiskboot unpack boot.img
