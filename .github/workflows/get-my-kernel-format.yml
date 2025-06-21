@@ -3,7 +3,7 @@ name: Process boot.img from URL
 on:
   workflow_dispatch: # Allow manual triggering of the workflow
     inputs:
-      boot_img_url: "https://filebin.net/iwd0mwwbsywpi38d/boot.img"
+      boot_img_url:
         description: "URL to download the boot.img file"
         required: true
         type: string
